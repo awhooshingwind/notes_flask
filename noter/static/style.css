@@ -1,5 +1,5 @@
 html {
-    font-family: ui-rounded;
+    font-family: monospace;
     background: #eee;
     padding: 1rem;
   }
@@ -12,6 +12,7 @@ html {
   
   h1, h2, h3, h4, h5, h6 {
     font-family: inherit;
+    display: flex;
     color: #377ba8;
     margin: 1rem 0;
   }
@@ -50,7 +51,8 @@ html {
   }
   
   nav ul li a, nav ul li span, header .action {
-    display: block;
+    display: flex;
+    align-items: left;
     padding: 0.5rem;
   }
   
@@ -78,7 +80,7 @@ html {
   
   .post > header {
     display: flex;
-    align-items: flex-end;
+    align-items: baseline;
     font-size: 0.85em;
   }
   
@@ -94,7 +96,7 @@ html {
   .note .about {
     color: slategray;
     font-style: italic;
-    font-size: 0.6em;
+    font-size: 0.75em;
   }
   
   .note .body {
@@ -108,7 +110,7 @@ html {
   .content form {
     margin: 1em 0;
     display: flex;
-    flex-direction: column;
+    flex-direction: row-reverse;
   }
   
   .content label {

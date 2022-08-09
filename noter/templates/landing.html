@@ -1,8 +1,12 @@
 {% extends 'base.html' %}
 
 {% block header %}
-    <h1>{% block title %}Welcome{% endblock %}</h1>
-    {% if g.user %}
-        <a class="action" href="{{ url_for('notebook.create') }}">Take Note</a>
+    <h1><a href="{{ url_for('notebook.index') }}">{% block title %} Welcome{% endblock %}</a></h1>
+        {% if g.user %}
+            <a class="action" href="{{ url_for('notebook.create') }}">Take Note</a>
     {% endif %}
 {% endblock %}
+
+{% block content %} 
+ <p>This is a Flask for simple note-taking, work in progress</p>
+{% endblock %} 

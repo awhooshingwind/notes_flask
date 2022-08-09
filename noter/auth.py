@@ -55,7 +55,7 @@ def login():
         ).fetchone()
 
         if user is None:
-            error = 'Nobody called that around here..'
+            error = 'Nobody called that around here...'
         elif not check_password_hash(user['password'], password):
             error = 'Wrong password'
         

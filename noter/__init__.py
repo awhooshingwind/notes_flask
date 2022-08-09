@@ -6,7 +6,7 @@ def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
-        SECRET_KEY='dev',
+        SECRET_KEY='78cad20c0c1270647126d32bf24fe7e5bcb673aa',
         DATABASE=os.path.join(app.instance_path, 'noter.sqlite')
     )
 
@@ -36,6 +36,6 @@ def create_app(test_config=None):
 
     from . import notebook
     app.register_blueprint(notebook.bp)
-    app.add_url_rule('/', endpoint='landing')
+    # app.add_url_rule('/', endpoint='notebook.landing')
 
     return app

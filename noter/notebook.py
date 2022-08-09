@@ -5,6 +5,7 @@ from werkzeug.exceptions import abort
 
 from noter.auth import login_required
 from noter.db import get_db
+import markdown
 
 bp = Blueprint('notebook', __name__)
 
@@ -16,11 +17,16 @@ def landing():
 @login_required
 def index():
     db = get_db()
-    notes = db.execute(
+    db_notes = db.execute(
       'SELECT n.id, title, body, created, author_id, username'
       ' FROM note n JOIN user u ON n.author_id = u.id'
       ' ORDER BY created DESC'  
     ).fetchall()
+    notes = []
+    for note in db_notes:
+        note = dict(note)
+        note['body'] = markdown.markdown(note['body'])
+        notes.append(note)
     return render_template('notes/index.html', notes=notes)
 
 @bp.route('/create', methods=('GET', 'POST'))

@@ -1,4 +1,3 @@
-from re import L
 import sqlite3
 
 import click
