@@ -1,4 +1,3 @@
-from logging import NOTSET
 import os
 
 from flask import Flask
