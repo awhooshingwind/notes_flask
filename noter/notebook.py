@@ -26,7 +26,7 @@ def index():
     notes = []
     for note in db_notes:
         note = dict(note)
-        note['body'] = markdown.markdown(note['body'], extensions=['mdx_math'])
+        note['body'] = markdown.markdown(note['body'], extensions=['mdx_math', 'tables'])
         notes.append(note)
     return render_template('notes/index.html', notes=notes)
 
@@ -97,9 +97,17 @@ def update(id):
         
     return render_template('notes/update.html', note=note)
 
+@bp.route('/<int:id>/delete', methods=('POST',))
+@login_required
+def delete(id):
+    get_note(id)
+    db = get_db()
+    db.execute('DELETE FROM note WHERE id = ?', (id,))
+    db.commit()
+    return redirect(url_for('notebook.index'))
+
 @bp.route('/<int:id>/detail', methods=('GET', 'POST',))
 @login_required
 def detail(id):
     note = get_note(id)
     return render_template('notes/detail.html', note=note)
-

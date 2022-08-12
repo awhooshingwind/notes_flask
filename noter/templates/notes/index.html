@@ -2,9 +2,6 @@
 
 {% block header %}
     <h1>{% block title %}Notes{% endblock %}</h1>
-    {% if g.user %}
-        <a class="action" href="{{ url_for('notebook.create') }}">New</a>
-    {% endif %}
 {% endblock %}
 
 {% block content %} 

@@ -1,9 +1,7 @@
 {% extends 'base.html' %}
 
 {% block header %}
-<h1>{% block title %}
-    <a href="{{ url_for('notebook.index') }}">{{ note['title'] }}</a>
-    {% endblock %}</h1>
+<h1><a href="{{ url_for('notebook.index') }}">{% block title %}{{ note['title'] }}{% endblock %}</a></h1>
 {% endblock %}
 
 {% block content %}
@@ -14,6 +12,6 @@
         <a class="action" href="{{ url_for('notebook.update', id=note['id']) }}">Edit</a>
         {% endif %}
     </header>
-    <p class="body">{{ note['body'] |safe }}</p>
+    <p class="detail">{{ note['body'] |safe }}</p>
 </article>
 {% endblock %}
