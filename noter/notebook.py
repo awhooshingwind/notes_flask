@@ -39,7 +39,7 @@ def create():
         error = None
 
         if not title:
-            error = 'Need to have a title'
+            error = 'Needs a title'
         
         if error is not None:
             flash(error)
@@ -93,7 +93,7 @@ def update(id):
                 (title, body, id)
                 )
             db.commit()
-        return redirect(url_for('notebook.index'))
+            return redirect(url_for('notebook.index'))
         
     return render_template('notes/update.html', note=note)
 

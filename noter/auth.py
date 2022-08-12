@@ -82,7 +82,7 @@ def load_logged_in_user():
 @bp.route('logout')
 def logout():
     session.clear()
-    return redirect(url_for('landing'))
+    return redirect(url_for('notebook.landing'))
 
 def login_required(view):
     @functools.wraps(view)

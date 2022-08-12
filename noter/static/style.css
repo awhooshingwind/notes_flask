@@ -30,13 +30,13 @@ a {
 
 hr {
   border: none;
-  border-top: 1px solid lightgray;
+  border-top: 1px solid darkgray;
 }
 
 nav {
   background: lightgray;
   display: flex;
-  align-items: center;
+  align-items: baseline;
   padding: 0 0.3rem;
 }
 
@@ -60,7 +60,6 @@ nav ul {
 nav ul li a,
 nav ul li span,
 header .action {
-  display: flex;
   align-items: left;
   padding: 0.2rem;
 }
@@ -116,6 +115,8 @@ header .action {
   color: slategray;
   font-style: italic;
   font-size: 0.75em;
+  justify-content: flex-start;
+  padding: 0.2rem
 }
 
 .note .body {
@@ -147,8 +148,8 @@ header .action {
 }
 
 .content textarea {
-  min-height: 12em;
-  resize: vertical;
+  min-height: 18em;
+  resize: both;
 }
 
 input.danger {

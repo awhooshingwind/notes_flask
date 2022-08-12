@@ -1,0 +1,4 @@
+include noter/schema.sql
+graft noter/static
+graft noter/templates
+global-exclude *.pyc
