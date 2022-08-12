@@ -1,5 +1,7 @@
 html {
-  font-family: monospace;
+  font-family: "Courier New", monospace;
+  font-size: 0.9em;
+  font-weight: 300;
   background: #eee;
   padding: 1rem;
 }
@@ -97,7 +99,7 @@ header .action {
 .post>header {
   display: flex;
   align-items: baseline;
-  font-size: 0.85em;
+  font-size: 0.8em;
 }
 
 .note>header>div:first-of-type {
@@ -105,7 +107,7 @@ header .action {
 }
 
 .note>header h1 {
-  font-size: 1.5em;
+  font-size: 1.2em;
   align-items: baseline;
   margin-bottom: 0;
 }
