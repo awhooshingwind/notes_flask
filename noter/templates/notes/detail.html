@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}
+    <a href="{{ url_for('notebook.index') }}">{{ note['title'] }}</a>
+    {% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<article class="note">
+    <header>
+        <div class="about">by {{ note['username'] }} on {{ note['created'].strftime('%Y-%m-%d') }}</div>
+        {% if g.user['id'] == note['author_id'] %}
+        <a class="action" href="{{ url_for('notebook.update', id=note['id']) }}">Edit</a>
+        {% endif %}
+    </header>
+    <p class="body">{{ note['body'] |safe }}</p>
+</article>
+{% endblock %}

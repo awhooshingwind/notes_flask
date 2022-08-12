@@ -7,6 +7,7 @@ from noter.auth import login_required
 from noter.db import get_db
 import markdown
 
+# md = markdown.Markdown(extensions=['mdx_math'])
 bp = Blueprint('notebook', __name__)
 
 @bp.route('/')
@@ -25,7 +26,7 @@ def index():
     notes = []
     for note in db_notes:
         note = dict(note)
-        note['body'] = markdown.markdown(note['body'])
+        note['body'] = markdown.markdown(note['body'], extensions=['mdx_math'])
         notes.append(note)
     return render_template('notes/index.html', notes=notes)
 
@@ -96,11 +97,9 @@ def update(id):
         
     return render_template('notes/update.html', note=note)
 
-@bp.route('/<int:id>/delete', methods=('POST',))
+@bp.route('/<int:id>/detail', methods=('GET', 'POST',))
 @login_required
-def delete(id):
-    get_note(id)
-    db = get_db()
-    db.execute('DELETE FROM note WHERE id = ?', (id,))
-    db.commit()
-    return redirect(url_for('notebook.index'))
+def detail(id):
+    note = get_note(id)
+    return render_template('notes/detail.html', note=note)
+
