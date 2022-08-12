@@ -12,6 +12,6 @@
         <a class="action" href="{{ url_for('notebook.update', id=note['id']) }}">Edit</a>
         {% endif %}
     </header>
-    <p class="detail">{{ note['body'] |safe }}</p>
+    <div class="detail">{{ note['body'] | safe }}</div>
 </article>
 {% endblock %}

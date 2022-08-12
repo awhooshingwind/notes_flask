@@ -110,4 +110,6 @@ def delete(id):
 @login_required
 def detail(id):
     note = get_note(id)
+    note = dict(note)
+    note['body'] = markdown.markdown(note['body'], extensions=['mdx_math', 'tables'])
     return render_template('notes/detail.html', note=note)

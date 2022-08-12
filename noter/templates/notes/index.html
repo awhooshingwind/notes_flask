@@ -18,7 +18,7 @@
                     <a class="action" href="{{ url_for('notebook.update', id=note['id']) }}">Edit</a>
                 {% endif %} 
             </header>
-            <p class="body">{{ note['body'] |safe }}</p>
+            <p class="body">{{ note['body'] | safe }}</p>
         </article>
             {% if not loop.last %} 
                 <hr>
