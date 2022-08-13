@@ -14,12 +14,14 @@ bp = Blueprint('notebook', __name__)
 def landing():
     return render_template('landing.html')
 
+
+# add logic for public/private views
 @bp.route('/index')
 @login_required
 def index():
     db = get_db()
     db_notes = db.execute(
-      'SELECT n.id, title, body, created, author_id, username'
+      'SELECT n.id, title, body, created, author_id, username, isPrivate'
       ' FROM note n JOIN user u ON n.author_id = u.id'
       ' ORDER BY created DESC'  
     ).fetchall()
@@ -30,12 +32,33 @@ def index():
         notes.append(note)
     return render_template('notes/index.html', notes=notes)
 
+# testing private index
+@bp.route('/private', methods=('GET', 'POST'))
+@login_required
+def private():
+    db = get_db()
+    db_notes = db.execute(
+      'SELECT n.id, title, body, created, author_id, username, isPrivate'
+      ' FROM note n JOIN user u ON n.author_id = u.id'
+      ' ORDER BY created DESC'  
+    ).fetchall()
+    notes = []
+    for note in db_notes:
+        note = dict(note)
+        note['body'] = markdown.markdown(note['body'], extensions=['mdx_math', 'tables'])
+        notes.append(note)
+    return render_template('notes/private.html', notes=notes)
+
+
 @bp.route('/create', methods=('GET', 'POST'))
 @login_required
 def create():
+    isPrivate = 0
     if request.method == 'POST':
         title = request.form['title']
         body = request.form['body']
+        if request.form.get('private'):
+            isPrivate = 1
         error = None
 
         if not title:
@@ -46,9 +69,9 @@ def create():
         else:
             db = get_db()
             db.execute(
-                'INSERT INTO note (title, body, author_id)'
-                ' VALUES (?, ?, ?)',
-                (title, body, g.user['id'])
+                'INSERT INTO note (title, body, author_id, isPrivate)'
+                ' VALUES (?, ?, ?, ?)',
+                (title, body, g.user['id'], isPrivate)
             )
             db.commit()
             return redirect(url_for('notebook.index'))
@@ -57,7 +80,7 @@ def create():
 
 def get_note(id, check_author=True):
     note = get_db().execute(
-        'SELECT n.id, title, body, created, author_id, username'
+        'SELECT n.id, title, body, created, author_id, username, isPrivate'
         ' FROM note n JOIN user u on n.author_id = u.id'
         ' WHERE n.id = ?',
         (id,)
@@ -78,6 +101,11 @@ def update(id):
     if request.method == 'POST':
         title = request.form['title']
         body = request.form['body']
+        isPrivate = request.form.get('private')
+        if(isPrivate):
+            isPrivate = 1
+        else:
+            isPrivate = 0
         error = None
 
         if not title:
@@ -88,9 +116,9 @@ def update(id):
         else:
             db = get_db()
             db.execute(
-                'UPDATE note SET title = ?, body = ?'
+                'UPDATE note SET title = ?, body = ?, isPrivate = ?'
                 ' WHERE id = ?',
-                (title, body, id)
+                (title, body, isPrivate, id)
                 )
             db.commit()
             return redirect(url_for('notebook.index'))

@@ -1,20 +1,25 @@
-{% extends 'base.html' %} 
+{% extends 'notes/create.html' %}
 
-{% block header %} 
-    <h1>{% block title %}Edit: "{{ note['title'] }}"{% endblock %}</h1>
-{% endblock %} 
+{% block header %}
+<h1>{% block title %}Edit: "{{ note['title'] }}"{% endblock %}</h1>
+{% endblock %}
 
-{% block content %} 
-    <form method="post">
-        <label for="title">Title</label>
-        <input name="title" id="title" value="{{ request.form['title'] or note['title'] }}">
-        <label for="body">Body</label>
-        <textarea name="body" id="body">{{ request.form['body'] or note['body'] }}</textarea>
-        <input type="submit" value="Save">
-    </form>
-    <hr>
-    <form action="{{ url_for('notebook.delete', id=note['id']) }}" method="post">
-        <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
-    </form>
-    {% endblock %}
-    
+{% block content %}
+<form method="post">
+    <label for="private">Private?</label>
+    {% if note['isPrivate'] %}
+    <input name="private" type="checkbox" id="private" value="{{ note['isPrivate'] }}" checked>
+    {% else %} 
+    <input name="private" type="checkbox" id="private" value="{{ note['isPrivate'] }}">
+    {% endif %} 
+    <label for="title">Title</label>
+    <input name="title" id="title" value="{{ request.form['title'] or note['title'] }}">
+    <label for="body">Body</label>
+    <textarea name="body" id="body">{{ request.form['body'] or note['body'] }}</textarea>
+    <input type="submit" value="Save">
+</form>
+<hr>
+<form action="{{ url_for('notebook.delete', id=note['id']) }}" method="post">
+    <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+</form>
+{% endblock %}
