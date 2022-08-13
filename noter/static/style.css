@@ -7,6 +7,12 @@ html {
 }
 
 body {
+  @media screen and (mind-width: 800px) {
+    .container {
+      max-width: 0.6rem
+    }
+  }
+
   max-width: 960px;
   margin: 0 auto;
   background: white;
@@ -101,6 +107,12 @@ header .action {
   font-size: 0.8em;
 }
 
+.private {
+  background: seagreen;
+  color: midnightblue;
+  font-weight: 500;
+}
+
 .note>header>div:first-of-type {
   flex: auto;
 }
@@ -134,13 +146,22 @@ header .action {
 .content form {
   margin: 1em 0;
   display: flex;
+  align-items: left;
+  flex: auto;
   flex-direction: column;
 }
 
 .content label {
   font-weight: bold;
   margin-bottom: 0.5em;
+  flex: initial;
+  flex-direction: row;
 }
+
+[type="checkbox"] {
+  align-self: flex-start;
+}
+
 
 .content input,
 .content textarea {

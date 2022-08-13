@@ -5,12 +5,8 @@
 {% endblock %}
 
 {% block content %}
-    {% for note in notes %}
-        {% if (g.user['id'] == note['author_id']) and (note['isPrivate'] == 1) %}
-    <article class="private">
-{% else %}
-    <article class="note">
-{% endif %}
+{% for note in notes %}
+<article class="note">
     <header>
         <div>
             <h1>
@@ -27,8 +23,8 @@
     <p class="body">{{ note['body'] | safe }}</p>
     {% endif %}
 </article>
-    {% if not loop.last %}
+{% if not loop.last %}
 <hr style="border-width:0.2em">
-    {% endif %}
+{% endif %}
 {% endfor %}
 {% endblock %}
