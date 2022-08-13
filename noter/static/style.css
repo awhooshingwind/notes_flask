@@ -108,9 +108,10 @@ header .action {
 }
 
 .private {
-  background: seagreen;
-  color: midnightblue;
-  font-weight: 500;
+  background: midnightblue;
+  color: steelblue;
+  opacity: 0.7;
+  font-weight: 200;
 }
 
 .note>header>div:first-of-type {
