@@ -5,17 +5,20 @@
 {% endblock %}
 
 {% block start_note %}
+{% block content %}
+{% for note in notes %}
 <article class="note">
-    {% block content %}
+    <h1>
+        <div>
+            {{ note['title'] }}
+        </div>
+    </h1>
+    <div class="about">by {{ note['username'] }} on {{ note['created'].strftime('%Y-%m-%d') }}</div>
     <div>
-        title about
+        <p class="body">{{ note['body'] | safe }}</p>
     </div>
-    <div>
-        note body
-    </div>
-    {% endblock content %}
 </article>
+{% endfor %}
+{% endblock content %}
 {% endblock %}
-{% block footer %}{% endblock %} 
-
-
+{% block footer %}{% endblock %}

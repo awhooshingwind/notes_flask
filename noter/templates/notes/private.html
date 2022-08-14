@@ -1,5 +1,7 @@
 {% extends 'view.html' %}
 
+{% block title %}TOP SECRET(ish) {% endblock %} 
+
 {% block content %}
 {% block start_note %}
 {% for note in notes %}
@@ -22,6 +24,5 @@
 {% endblock %}
 {% endblock %}
 
-{% block footer %}
-different stuff
-{% endblock footer %}
+{% block footer %}different stuff
+{% endblock %}
