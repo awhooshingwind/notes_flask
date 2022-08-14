@@ -6,7 +6,7 @@
 
 {% block content %}
     {% for note in notes %}
-        {% if (g.user['id'] == note['author_id']) and (note['isPrivate'] == 1) %}
+        {% if (note['isPrivate']) %}
     <article class="private">
 {% else %}
     <article class="note">

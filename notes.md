@@ -8,9 +8,14 @@
     - current (unintentional) behavior of index template
 
 ## For later
+- add functionality for footer??
 - refactor tests to work with updates
     - save for final refacor, or build in working index private behavior?
 - rework CSS for better layout/asthetics
+- database schema modifications (ALTER table?)
+    - add a temp_schema file?
+- make detail view show print layout styling?
+- add some fun python logic for landing page?
 
 ## Code snippets
 MathJax config:
