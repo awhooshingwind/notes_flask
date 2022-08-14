@@ -11,3 +11,16 @@
 - refactor tests to work with updates
     - save for final refacor, or build in working index private behavior?
 - rework CSS for better layout/asthetics
+
+## Code snippets
+MathJax config:
+
+```
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      config: ["MMLorHTML.js"],
+      jax: ["input/TeX", "output/HTML-CSS", "output/NativeMML"],
+      extensions: ["MathMenu.js", "MathZoom.js"]
+    });
+    </script>
+``` 

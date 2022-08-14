@@ -1,17 +1,27 @@
 {% extends 'view.html' %}
 
-{% block header %}Private Notes{% endblock %}
-
 {% block content %}
+{% block start_note %}
 {% for note in notes %}
+{% if (g.user['id'] == note['author_id']) and (note['isPrivate'] ==1) %}
 <article class="private">
-    {% block test %} test {% endblock %} 
-    {% if note['isPrivate'] == 1 %}
+    <h1>
+        {{ note['title'] }}
+    </h1>
+    <div>
+        <a class="action" href="{{ url_for('notebook.update', id=note['id']) }}">Edit</a>
+    </div>
+    </div>
     <p class="body">{{ note['body'] | safe }}</p>
-    {% endif %}
 </article>
+{% endif %}
 {% if not loop.last %}
 <hr style="border-width:0.2em">
 {% endif %}
 {% endfor %}
 {% endblock %}
+{% endblock %}
+
+{% block footer %}
+different stuff
+{% endblock footer %}

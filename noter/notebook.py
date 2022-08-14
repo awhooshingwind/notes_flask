@@ -8,6 +8,7 @@ from noter.db import get_db
 import markdown
 
 # md = markdown.Markdown(extensions=['mdx_math'])
+extensions = ['mdx_math', 'tables', 'fenced_code']
 bp = Blueprint('notebook', __name__)
 
 @bp.route('/')
@@ -28,7 +29,7 @@ def index():
     notes = []
     for note in db_notes:
         note = dict(note)
-        note['body'] = markdown.markdown(note['body'], extensions=['mdx_math', 'tables'])
+        note['body'] = markdown.markdown(note['body'], extensions=extensions)
         notes.append(note)
     return render_template('notes/index.html', notes=notes)
 
@@ -45,7 +46,7 @@ def private():
     notes = []
     for note in db_notes:
         note = dict(note)
-        note['body'] = markdown.markdown(note['body'], extensions=['mdx_math', 'tables'])
+        note['body'] = markdown.markdown(note['body'], extensions=extensions)
         notes.append(note)
     return render_template('notes/private.html', notes=notes)
 
@@ -139,5 +140,5 @@ def delete(id):
 def detail(id):
     note = get_note(id)
     note = dict(note)
-    note['body'] = markdown.markdown(note['body'], extensions=['mdx_math', 'tables'])
+    note['body'] = markdown.markdown(note['body'], extensions=extensions)
     return render_template('notes/detail.html', note=note)
