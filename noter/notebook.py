@@ -15,6 +15,23 @@ bp = Blueprint('notebook', __name__)
 def landing():
     return render_template('landing.html')
 
+@bp.route('/view')
+def view():
+    if g.user:
+        return redirect(url_for('notebook.index'))
+    db = get_db()
+    db_notes = db.execute(
+      'SELECT n.id, title, body, created, author_id, username, isPrivate'
+      ' FROM note n JOIN user u ON n.author_id = u.id'
+      ' ORDER BY created DESC'  
+    ).fetchall()
+    notes_pub = []
+    for note in db_notes:
+        note = dict(note)
+        if note['isPrivate'] == 0:
+            note['body'] = markdown.markdown(note['body'], extensions=extensions)
+            notes_pub.append(note)
+    return render_template('view.html', notes=notes_pub)
 
 # add logic for public/private views
 @bp.route('/index')

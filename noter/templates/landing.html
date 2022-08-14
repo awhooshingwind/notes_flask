@@ -1,12 +1,14 @@
 {% extends 'base.html' %}
 
 {% block header %}
-<h1><a href="{{ url_for('notebook.index') }}">{% block title %} Welcome{% endblock %}</a></h1>
+<h1>
+    <a href="{{ url_for('notebook.view') }}">
+        {% block title %} Welcome{% endblock %}</a></h1>
 {% endblock %}
 
 {% block content %}
 <p>This is a Flask app for simple note-taking, work in progress.</p>
 {% endblock %}
 
-{% block footer %} This will do something cool soon!
+{% block footer %}This will do something cool soon!
 {% endblock %} 

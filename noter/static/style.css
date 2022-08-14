@@ -204,6 +204,12 @@ input[type=submit] {
   color: firebrick;
   font-size: 1.1em;
   font-weight: 600;
-  padding: 0.6em;
+  padding: 0.3em 1.1em 0.2em;
   align-content: flex-start;
+}
+
+.secret {
+  display: flex;
+  flex: auto;
+  justify-content: flex-end;
 }
