@@ -1,30 +1,21 @@
-{% extends 'base.html' %}
+{% include 'base.html' %}
 
 {% block header %}
 <h1>{% block title %}Notes{% endblock %}</h1>
 {% endblock %}
 
-{% block content %}
-{% for note in notes %}
 <article class="note">
     <header>
         <div>
             <h1>
-                <a href="{{ url_for('notebook.detail', id=note['id']) }}">
-                    {{ note['title'] }}</a>
+                {% block test}{% endblock %} 
             </h1>
-            <div class="about">by {{ note['username'] }} on {{ note['created'].strftime('%Y-%m-%d') }}</div>
+            about
         </div>
-        {% if g.user['id'] == note['author_id'] %}
-        <a class="action" href="{{ url_for('notebook.update', id=note['id']) }}">Edit</a>
-        {% endif %}
+        </div>
+        edit
     </header>
-    {% if note['isPrivate'] == 0 %}
-    <p class="body">{{ note['body'] | safe }}</p>
-    {% endif %}
+    notebody
 </article>
-{% if not loop.last %}
-<hr style="border-width:0.2em">
-{% endif %}
-{% endfor %}
-{% endblock %}
+
+{% block content %}{% endblock %}
