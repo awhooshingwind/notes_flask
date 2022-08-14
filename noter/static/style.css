@@ -108,8 +108,8 @@ header .action {
 }
 
 .private {
-  background: midnightblue;
-  color: steelblue;
+  background: darkslategray;
+  color: coral;
   opacity: 0.7;
   font-weight: 200;
 }
