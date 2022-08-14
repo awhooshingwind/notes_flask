@@ -108,10 +108,11 @@ header .action {
 }
 
 .private {
-  background: darkslategray;
-  color: coral;
-  opacity: 0.7;
-  font-weight: 200;
+  background: oldlace;
+  color: midnightblue;
+  opacity: 0.94;
+  font-weight: 300;
+  padding:0.8em;
 }
 
 .note>header>div:first-of-type {
@@ -181,4 +182,13 @@ input.danger {
 input[type=submit] {
   align-self: start;
   min-width: 6em;
+}
+
+.footer {
+  display: flex;
+  color: firebrick;
+  font-size: 1.1em;
+  font-weight: 600;
+  padding: 0.6em;
+  align-content: flex-start;
 }

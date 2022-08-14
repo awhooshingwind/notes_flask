@@ -1,21 +1,21 @@
-{% include 'base.html' %}
+{% extends 'base.html' %}
 
 {% block header %}
-<h1>{% block title %}Notes{% endblock %}</h1>
+<h1>{% block title %}View Notes{% endblock %}</h1>
 {% endblock %}
 
+{% block start_note %}
 <article class="note">
-    <header>
-        <div>
-            <h1>
-                {% block test}{% endblock %} 
-            </h1>
-            about
-        </div>
-        </div>
-        edit
-    </header>
-    notebody
+    {% block content %}
+    <div>
+        title about
+    </div>
+    <div>
+        note body
+    </div>
+    {% endblock content %}
 </article>
+{% endblock %}
+{% block footer %}{% endblock %} 
 
-{% block content %}{% endblock %}
+

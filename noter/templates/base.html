@@ -3,14 +3,6 @@
     src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-MML-AM_CHTML">
     </script>
 
-<!-- <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      config: ["MMLorHTML.js"],
-      jax: ["input/TeX", "output/HTML-CSS", "output/NativeMML"],
-      extensions: ["MathMenu.js", "MathZoom.js"]
-    });
-    </script>
-     -->
 <title>{% block title %}{% endblock %} - NoteTaker</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <nav>
@@ -38,4 +30,7 @@
     <div class="flash">{{ message }}</div>
     {% endfor %}
     {% block content %}{% endblock %}
+</section>
+<section class="footer">
+    {% block footer %}{% endblock %} 
 </section>
