@@ -44,12 +44,13 @@ def private():
       ' WHERE n.isPrivate = 1 and u.id = n.author_id '
       ' ORDER BY created DESC'  
     ).fetchall()
-    notes = []
+    priv_notes = []
     for note in db_notes:
         note = dict(note)
-        note['body'] = markdown.markdown(note['body'], extensions=extensions)
-        notes.append(note)
-    return render_template('notes/private.html', notes=notes)
+        if note['author_id'] == g.user['id']:
+            note['body'] = markdown.markdown(note['body'], extensions=extensions)
+            priv_notes.append(note)
+    return render_template('notes/private.html', notes=priv_notes)
 
 
 @bp.route('/create', methods=('GET', 'POST'))

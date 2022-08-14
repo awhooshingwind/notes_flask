@@ -31,21 +31,27 @@ h6 {
 }
 
 a {
-  color: #377ba8;
+  color: #275b7d;
 }
 
 hr {
   border: none;
-  border-top: 1px solid darkgray;
+  height: 0.15em;
 }
 
-.other{
-  border-width:0.1em; 
-  border-color: firebrick
+.priv_hr {
+  color: firebrick;
+  background-color: firebrick;
 }
+
+.note_hr {
+  color: burlywood;
+  background-color: rgb(141, 172, 80);
+}
+
 
 nav {
-  background: lightgray;
+  background: rgb(173, 172, 172);
   display: flex;
   align-items: baseline;
   padding: 0 0.3rem;
@@ -80,7 +86,7 @@ header .action {
   flex: auto;
   justify-content: left;
   align-items: baseline;
-  padding: 0 4.5em 0.2em
+  padding: 0 2em 0.2em
 }
 
 .content {
@@ -88,14 +94,14 @@ header .action {
 }
 
 .content>header {
-  border-bottom: 1px solid lightgray;
+  border-bottom: 1px solid whitesmoke;
   display: flex;
   align-items: flex-end;
 }
 
 .content>header h1 {
   flex: intial;
-  column-gap: 3.6em;
+  column-gap: 2rem;
   margin: 1rem 0 0.25rem 0;
 }
 
@@ -113,15 +119,19 @@ header .action {
 }
 
 .private {
-  background: oldlace;
+  background: antiquewhite;
   color: midnightblue;
-  opacity: 0.94;
+  opacity: 0.84;
   font-weight: 300;
-  padding:0.8em;
+  padding: 0.3em 0.8em;
+}
+
+.note {
+  background-color: gainsboro;
 }
 
 .note>header>div:first-of-type {
-  flex: auto;
+  padding: 0.3em 0.8em;
 }
 
 .note>header h1 {
