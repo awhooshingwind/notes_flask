@@ -1,17 +1,17 @@
 {% extends 'view.html' %}
 
-{% block header %}Private Notes{% endblock %} 
+{% block header %}Private Notes{% endblock %}
 
-<!-- {% from 'notes/index.html' import notes with context %} 
-
+{% block content %}
 {% for note in notes %}
-{% if (g.user['id'] == note['author_id']) and (note['isPrivate'] == 1) %}
 <article class="private">
-    {% endif %}
-{% block article %}
+    {% block test %} test {% endblock %} 
     {% if note['isPrivate'] == 1 %}
     <p class="body">{{ note['body'] | safe }}</p>
     {% endif %}
 </article>
+{% if not loop.last %}
+<hr style="border-width:0.2em">
+{% endif %}
+{% endfor %}
 {% endblock %}
-{% endfor %} -->
