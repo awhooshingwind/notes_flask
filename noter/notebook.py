@@ -39,8 +39,9 @@ def index():
 def private():
     db = get_db()
     db_notes = db.execute(
-      'SELECT n.id, title, body, created, author_id, username, isPrivate'
-      ' FROM note n JOIN user u ON n.author_id = u.id'
+      'SELECT *'
+      ' FROM note n JOIN user u '
+      ' WHERE n.isPrivate = 1 and u.id = n.author_id '
       ' ORDER BY created DESC'  
     ).fetchall()
     notes = []

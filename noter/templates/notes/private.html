@@ -3,7 +3,7 @@
 {% block content %}
 {% block start_note %}
 {% for note in notes %}
-{% if (g.user['id'] == note['author_id']) and (note['isPrivate'] ==1) %}
+{% if (g.user['id'] == note['author_id']) %}
 <article class="private">
     <h1>
         {{ note['title'] }}
@@ -15,8 +15,8 @@
     <p class="body">{{ note['body'] | safe }}</p>
 </article>
 {% endif %}
-{% if not loop.last %}
-<hr style="border-width:0.2em">
+{% if not loop.last and (g.user['id'] == note['author_id']) %}
+<hr class="other"></hr>
 {% endif %}
 {% endfor %}
 {% endblock %}
