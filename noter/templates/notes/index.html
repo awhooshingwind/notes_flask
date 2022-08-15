@@ -24,7 +24,7 @@
             {% endif %}
         </header>
         {% if note['isPrivate'] == 0 %}
-        <p class="body">{{ note['body'] | safe }}</p>
+        <div class="body">{{ note['body'] | safe }}</div>
         {% endif %}
     </article>
     {% if not loop.last %}

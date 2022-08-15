@@ -8,7 +8,7 @@ from noter.db import get_db
 import markdown
 
 # md = markdown.Markdown(extensions=['mdx_math'])
-extensions = ['mdx_math', 'tables', 'fenced_code']
+extensions = ['mdx_math', 'extra', 'codehilite']
 bp = Blueprint('notebook', __name__)
 
 @bp.route('/')
