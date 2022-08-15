@@ -1,10 +1,10 @@
 ## In progress
 - refactoring views
-    - detail view will show secret notes (check for auth)
-- private index vs public
+    - detail view will show secret notes (check for auth) **FIXED**
+- private index vs public **WORKING**
     - sorting working in index template, but could be better
     - refactoring view code with this is mind
-- show private notes but hide note body??
+- show private notes but hide note body?? **WORKING**
     - current (unintentional) behavior of index template
 
 ## For later
@@ -16,6 +16,7 @@
     - add a temp_schema file?
 - make detail view show print layout styling?
 - add some fun python logic for landing page?
+- sort/search functionality??
 
 ## Code snippets
 MathJax config:
