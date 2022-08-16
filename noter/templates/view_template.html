@@ -1,14 +1,19 @@
 {% extends 'base.html' %}
 
+{% macro display_entry(class, ref) -%}
+
+{%- endmacro %} 
+
 {% block title %} THIS View {% endblock %}
 {% block header %}
+Header Holder
 {% endblock %}
 
-{% if g.user %}
-<div class="container">
-    <a class="action" href="{{ url_for('notebook.create') }}">Take Note</a>
-</div>
-<div class="container">
-    <a class="action" href="{{ url_for('notebook.make_task') }}"> Make Task</a>
-</div>
-{% endif %}
+{% block content %}
+{% for entry in entries %}
+ <article class="note">{{ entry['body'] | safe }}</article>
+
+{% endfor %} 
+{% endblock %}
+
+{% block footer %}Footer{% endblock %} 

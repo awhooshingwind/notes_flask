@@ -8,11 +8,11 @@
 {% block content %}
 {% for note in notes %}
 <article class="note">
-    <h1>
+    <h6>
         <div>
             {{ note['title'] }}
         </div>
-    </h1>
+    </h6>
     <div class="about">by {{ note['username'] }} on {{ note['created'].strftime('%Y-%m-%d') }}</div>
     <div>
         <p class="body">{{ note['body'] | safe }}</p>

@@ -21,9 +21,18 @@
             {% endif %}
     </ul>
 </nav>
+{% if g.user %}
+<div>
+    <nav class="nav2"><a class="action" href="{{ url_for('notebook.create') }}">Take Note</a>
+        <a class="action" href="{{ url_for('notebook.make_task') }}"> Make Task</a>
+    </nav>
+</div>
+{% endif %}
 <section class="content">
     <header>
-        {% block header %}{% endblock %}
+        <h2>
+            {% block header %}{% endblock %}
+        </h2>
     </header>
     {% for message in get_flashed_messages() %}
     <div class="flash">{{ message }}</div>
