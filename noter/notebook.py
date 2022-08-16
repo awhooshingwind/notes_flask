@@ -7,7 +7,7 @@ from noter.auth import login_required
 from noter.db import get_db
 import markdown
 
-# md = markdown.Markdown(extensions=['mdx_math'])
+# md = markdown.Markdown(extensions=extensions)
 extensions = ['mdx_math', 'extra', 'codehilite']
 bp = Blueprint('notebook', __name__)
 
@@ -17,21 +17,20 @@ def landing():
 
 @bp.route('/view')
 def view():
-    if g.user:
-        return redirect(url_for('notebook.index'))
     db = get_db()
-    db_notes = db.execute(
-      'SELECT n.id, title, body, created, author_id, username, isPrivate'
-      ' FROM note n JOIN user u ON n.author_id = u.id'
+    db_data = db.execute(
+      'SELECT * '
+      ' FROM note n JOIN user u JOIN task t ON n.author_id = u.id and t.author_id = u.id'
       ' ORDER BY created DESC'  
     ).fetchall()
-    notes_pub = []
+    pub_data = {}
+
     for note in db_notes:
         note = dict(note)
         if note['isPrivate'] == 0:
             note['body'] = markdown.markdown(note['body'], extensions=extensions)
             notes_pub.append(note)
-    return render_template('view.html', notes=notes_pub)
+    return render_template('view_template.html', notes=notes_pub)
 
 @bp.route('/index')
 @login_required
