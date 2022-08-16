@@ -5,10 +5,8 @@ from werkzeug.exceptions import abort
 
 from noter.auth import login_required
 from noter.db import get_db
-import markdown
+from noter.logic import *
 
-# md = markdown.Markdown(extensions=extensions)
-extensions = ['mdx_math', 'extra', 'codehilite']
 bp = Blueprint('notebook', __name__)
 
 @bp.route('/')
@@ -18,19 +16,23 @@ def landing():
 @bp.route('/view')
 def view():
     db = get_db()
+    # BREAKS HERE - BETTER SCHEMA SHOULD MAKE EASIER FIX
+    # TECHNICALLY WORKING BUT TRIPLES RESULT
     db_data = db.execute(
-      'SELECT * '
-      ' FROM note n JOIN user u JOIN task t ON n.author_id = u.id and t.author_id = u.id'
-      ' ORDER BY created DESC'  
+      'SELECT n.body, t.todo, n.isPrivate '
+      ' FROM note n JOIN task t ON n.author_id = t.author_id'  
     ).fetchall()
-    pub_data = {}
+    entries_pub = []
+    for entry in db_data:
+        if entry['isPrivate'] == 0:
+            entry = dict(entry)
+            for k, v in entry.items():
+                if type(v) is str:
+                    entry[k] = make_md(v)
+            
+            entries_pub.append(entry)
 
-    for note in db_notes:
-        note = dict(note)
-        if note['isPrivate'] == 0:
-            note['body'] = markdown.markdown(note['body'], extensions=extensions)
-            notes_pub.append(note)
-    return render_template('view_template.html', notes=notes_pub)
+    return render_template('view_template.html', entries=entries_pub)
 
 @bp.route('/index')
 @login_required
