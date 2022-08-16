@@ -3,11 +3,14 @@
     src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-MML-AM_CHTML">
     </script>
 
-<title>{% block title %}{% endblock %} - NoteTasker</title>
+<title>{% block title %}HOLDS{% endblock %} - NoteTasker</title>
+
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
 <nav>
-    <h1><a href="{{ url_for('notebook.landing') }}">NoteTaker   </a>
-    <a href="{{ url_for('notebook.tasking') }}">   TaskMaker</a></h1>
+    <h1><a href="{{ url_for('notebook.index') }}">NoteTaker </a>
+        <a href="{{ url_for('notebook.tasking') }}"> TaskMaker</a>
+    </h1>
     <ul>
         {% if g.user %}
         <li><span>{{ g.user['username'] }}</span>
@@ -21,14 +24,6 @@
 <section class="content">
     <header>
         {% block header %}{% endblock %}
-        <div class="container">
-            {% if g.user %}
-            <a class="action" href="{{ url_for('notebook.create') }}">Take Note</a>
-        </div>
-        <div class="container">
-            <a class="action" href="{{ url_for('notebook.make_task') }}"> Make Task</a>
-        </div>
-        {% endif %}
     </header>
     {% for message in get_flashed_messages() %}
     <div class="flash">{{ message }}</div>
@@ -38,4 +33,3 @@
 
 <section class="footer">{% block footer %}{% endblock %}
 </section>
-
