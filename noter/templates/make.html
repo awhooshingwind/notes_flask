@@ -1,0 +1,21 @@
+{% extends 'base.html' %} 
+
+{% if kind == 'task' %}
+{% block header %} 
+    <h1>{% block title %}New Task{% endblock %}</h1>
+{% endblock %}
+{% endif %} 
+
+
+{% block content %} 
+    <form method="post">
+        <label for="due">Due Date</label>
+        <input class="duedate" name="due" type="date" id="due">
+        <label for="private">Private?</label>
+        <input name="private" type="checkbox" id="private">
+        <label for="todo">Task</label>
+        <textarea name="todo" id="todo">{{ request.form['body'] }}</textarea>
+        <input type="submit" value="Save">
+        </form>
+{% endblock %} 
+

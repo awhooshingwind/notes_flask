@@ -16,3 +16,13 @@ CREATE TABLE note (
     body TEXT NOT NULL,
     FOREIGN KEY (author_id) REFERENCES user (id)
 );
+
+CREATE TABLE IF NOT EXISTS task (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    author_id INTEGER NOT NULL,
+    isPrivate INTEGER NOT NULL DEFAULT 1,
+    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    dueDate TEXT,
+    todo TEXT NOT NULL,
+    FOREIGN KEY (author_id) REFERENCES user (id)
+)
