@@ -1,22 +1,21 @@
 ## In progress
-- refactoring views
-    - detail view will show secret notes (check for auth) **FIXED**
-- private index vs public **WORKING**
-    - sorting working in index template, but could be better
-    - refactoring view code with this is mind
-- show private notes but hide note body?? **WORKING**
-    - current (unintentional) behavior of index template
+- added task feature
+- but now everything is a real mess
+- think about how to refactor everything to be DRY-er
+    - maybe macros? use more python logic and less template logic?
+    - classes for template display/template objects
 
 ## For later
-- add functionality for footer??
 - refactor tests to work with updates
-    - save for final refacor, or build in working index private behavior?
+    - save for final refacor, lots to fix already
 - rework CSS for better layout/asthetics
-- database schema modifications (ALTER table?)
+- database schema modifications
     - add a temp_schema file?
+    - migrate logic in db.py file??
 - make detail view show print layout styling?
-- add some fun python logic for landing page?
+- add some fun to landing page?
 - sort/search functionality??
+- sort tasks by due date?
 
 ## Code snippets
 MathJax config:
@@ -30,3 +29,16 @@ MathJax config:
     });
     </script>
 ``` 
+
+SQL Console
+```
+import sqlite3
+conn = sqlite3.connect('instance/noter.sqlite')
+cur = conn.cursor()
+
+cur.execute("""
+SQL statements...
+""")
+
+#use fetchone() fetchall() to get results
+```

@@ -33,7 +33,6 @@ def view():
             notes_pub.append(note)
     return render_template('view.html', notes=notes_pub)
 
-# add logic for public/private views
 @bp.route('/index')
 @login_required
 def index():
@@ -61,13 +60,25 @@ def private():
       ' WHERE n.isPrivate = 1 and u.id = n.author_id '
       ' ORDER BY created DESC'  
     ).fetchall()
+    db_tasks = db.execute(
+        'SELECT *'
+        ' FROM task t JOIN user u'
+        ' WHERE t.isPrivate = 1 and u.id = t.author_id '
+        ' ORDER BY created DESC'
+    ).fetchall()
+    priv_tasks = []
+    for task in db_tasks:
+        task = dict(task)
+        if task['author_id'] == g.user['id']:
+            task['todo'] = markdown.markdown(task['todo'], extensions=extensions)
+            priv_tasks.append(task)
     priv_notes = []
     for note in db_notes:
         note = dict(note)
         if note['author_id'] == g.user['id']:
             note['body'] = markdown.markdown(note['body'], extensions=extensions)
             priv_notes.append(note)
-    return render_template('notes/private.html', notes=priv_notes)
+    return render_template('notes/private.html', notes=priv_notes, tasks=priv_tasks)
 
 
 @bp.route('/create', methods=('GET', 'POST'))
@@ -161,3 +172,95 @@ def detail(id):
     note = dict(note)
     note['body'] = markdown.markdown(note['body'], extensions=extensions)
     return render_template('notes/detail.html', note=note)
+
+# Testing Tasks Code
+@bp.route('/task', methods=('GET', 'POST'))
+@login_required
+def make_task():
+    isPrivate = 1
+    if request.method == 'POST':
+        todo = request.form['todo']
+        dueDate = request.form['due']
+        if not request.form.get('private'):
+            isPrivate = 0
+        error = None
+
+        if not todo:
+            error = 'To do nothing and be content, if only...'
+        
+        if error is not None:
+            flash(error)
+        else:
+            db = get_db()
+            db.execute(
+                'INSERT INTO task (todo, author_id, dueDate, isPrivate)'
+                ' VALUES (?, ?, ?, ?)',
+                (todo, g.user['id'], dueDate, isPrivate)
+            )
+            db.commit()
+            return redirect(url_for('notebook.index'))
+    
+    return render_template('make.html', kind='task')
+
+def get_task(id, check_author=True):
+    task = get_db().execute(
+        'SELECT t.id, todo, dueDate, created, author_id, username, isPrivate'
+        ' FROM task t JOIN user u on t.author_id = u.id'
+        ' WHERE t.id = ?',
+        (id,)
+        ).fetchone()
+
+    if task is None:
+        abort(404, f"Note id {id} doesn't exist.")
+        
+    if check_author and task['author_id'] != g.user['id']:
+        abort(403)
+        
+    return task
+
+@bp.route('/<int:id>/taskupdate', methods=('GET', 'POST'))
+@login_required
+def task_update(id):
+    task = get_task(id)
+    if request.method == 'POST':
+        todo = request.form['todo']
+        dueDate = request.form['due']
+        isPrivate = request.form.get('private')
+        if(isPrivate):
+            isPrivate = 1
+        else:
+            isPrivate = 0
+        error = None
+
+        if not todo:
+            error = 'Nothing from nothing leaves...well you know..'
+            
+        if error is not None:
+            flash(error)
+        else:
+            db = get_db()
+            db.execute(
+                'UPDATE task SET todo = ?, dueDate = ?, isPrivate = ?'
+                ' WHERE id = ?',
+                (todo, dueDate, isPrivate, id)
+                )
+            db.commit()
+            return redirect(url_for('notebook.tasking'))
+        
+    return render_template('notes/update.html', task=task, kind='task')
+
+@bp.route('/tasking')
+@login_required
+def tasking():
+    db = get_db()
+    db_tasks = db.execute(
+      'SELECT *'
+      ' FROM task t JOIN user u ON t.author_id = u.id'
+      ' ORDER BY created DESC'  
+    ).fetchall()
+    tasks = []
+    for task in db_tasks:
+        task = dict(task)
+        task['todo'] = markdown.markdown(task['todo'], extensions=extensions)
+        tasks.append(task)
+    return render_template('notes/taskview.html', tasks=tasks)

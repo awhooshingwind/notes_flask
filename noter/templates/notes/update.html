@@ -1,17 +1,17 @@
 {% extends 'notes/create.html' %}
-
-{% block header %}
-<h1>{% block title %}Edit: "{{ note['title'] }}"{% endblock %}</h1>
+{% if kind == 'note' %}
+{% block header_note %}
+<h1>{% block title_note %}Edit: "{{ note['title'] }}"{% endblock %}</h1>
 {% endblock %}
 
-{% block content %}
+{% block content_note %}
 <form method="post">
     <label for="private">Private?</label>
     {% if note['isPrivate'] %}
     <input name="private" type="checkbox" id="private" value="{{ note['isPrivate'] }}" checked>
-    {% else %} 
+    {% else %}
     <input name="private" type="checkbox" id="private" value="{{ note['isPrivate'] }}">
-    {% endif %} 
+    {% endif %}
     <label for="title">Title</label>
     <input name="title" id="title" value="{{ request.form['title'] or note['title'] }}">
     <label for="body">Body</label>
@@ -23,3 +23,25 @@
     <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
 </form>
 {% endblock %}
+
+{% elif kind == 'task' %}
+{% block header %}
+<h1>{% block title %}{{ task['todo']}} {% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<form method="post">
+    <label for="due">Due Date</label>
+    <input class="duedate" name="due" type="date" id="due" value="{{ task['dueDate'] }}">
+    <label for="private">Private?</label>
+    {% if task['isPrivate'] %}
+    <input name="private" type="checkbox" id="private" value="{{ task['isPrivate'] }}" checked>
+    {% else %}
+    <input name="private" type="checkbox" id="private" value="{{ task['isPrivate'] }}">
+    {% endif %}
+    <label for="todo">Task</label>
+    <textarea name="todo" id="todo">{{task['todo'] }}</textarea>
+    <input type="submit" value="Save">
+</form>
+{% endblock %}
+{% endif %}

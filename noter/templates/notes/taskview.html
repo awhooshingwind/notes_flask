@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}View Tasks{% endblock %}</h1>
+{% endblock %}
+
+
+{% block content %}
+{% for task in tasks %}
+{% if (task['isPrivate']) %}
+<article class="private">
+    {% else %}
+    <article class="task">
+    {% endif %} 
+    <h1>
+        <div class="due">
+            Due: {{ task['dueDate'] }} 
+        </div>
+    </h1>
+        <div><a class="action" href="{{ url_for('notebook.task_update', id=task['id']) }}">Edit</a></div>
+        
+    <div>
+        <p class="body">{{ task['todo'] | safe }}</p>
+    </div>
+</article>
+{% endfor %}
+{% endblock content %}
+
+{% block footer %}What else?{% endblock %}
