@@ -4,7 +4,7 @@
 <h1>{% block title %}View Notes{% endblock %}</h1>
 {% endblock %}
 
-{% block start_note %}
+
 {% block content %}
 {% for note in notes %}
 <article class="note">
@@ -20,5 +20,5 @@
 </article>
 {% endfor %}
 {% endblock content %}
-{% endblock %}
+
 {% block footer %}{% endblock %}
