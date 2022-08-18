@@ -20,11 +20,11 @@ def view():
     # BREAKS HERE - BETTER SCHEMA SHOULD MAKE EASIER FIX
     # TECHNICALLY WORKING BUT TRIPLES RESULT
     db_data = db.execute(
-      'SELECT n.noteID, body, title,'
-      ' FROM note n INNER JOIN user u ON n.authorID = u.userID'  
+      'SELECT n.noteID, body, title '
+      ' FROM note n JOIN user u ON n.authorID = u.userID'  
     ).fetchall()
     entries_pub = pd.DataFrame(db_data)
-    # print(entries_pub)
+    print(entries_pub)
 
     return render_template('view_template.html', entries=entries_pub)
 
