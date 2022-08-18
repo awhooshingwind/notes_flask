@@ -12,24 +12,36 @@ bp = Blueprint('notebook', __name__)
 
 @bp.route('/')
 def landing():
-    return render_template('landing.html')
+    fun = np.random.randint(5000)
+    return render_template('landing.html', fun=fun)
 
 @bp.route('/view')
 def view():
     db = get_db()
-    # BREAKS HERE - BETTER SCHEMA SHOULD MAKE EASIER FIX
-    # TECHNICALLY WORKING BUT TRIPLES RESULT
-    # db_data = db.execute(
-    #   'SELECT n.title, body '
-    #   ' FROM note n JOIN user u ON n.authorID = u.userID'  
-    # ).fetchall()
-    # entries_pub = pd.DataFrame(db_data)
-    # print(db_data)
-    # entries = entries_pub
-    entries = pd.read_sql('SELECT n.title, body '
-      ' FROM note n JOIN user u ON n.authorID = u.userID', db)
-    print(entries)
-    return render_template('view_template.html', entries=entries)
+    db_notes = db.execute(
+      'SELECT *'
+      ' FROM note n JOIN user u '
+      ' WHERE n.isPrivate = 0 and u.userID = n.authorID '
+      ' ORDER BY created DESC'  
+    ).fetchall()
+    db_tasks = db.execute(
+        'SELECT *'
+        ' FROM task t JOIN user u'
+        ' WHERE t.isPrivate = 0 and u.userID = t.authorID '
+        ' ORDER BY dueDate'
+    ).fetchall()
+    pub_tasks = []
+    for task in db_tasks:
+        task = dict(task)
+        task['todo'] = make_md(task['todo'])
+        pub_tasks.append(task)
+    pub_notes = []
+    for note in db_notes:
+        note = dict(note)
+        note['body'] = make_md(note['body'])
+        pub_notes.append(note)
+    return render_template('view_template.html', notes=pub_notes, tasks=pub_tasks)
+
 
 @bp.route('/index')
 @login_required
@@ -43,7 +55,7 @@ def index():
     notes = []
     for note in db_notes:
         note = dict(note)
-        note['body'] = markdown.markdown(note['body'], extensions=extensions)
+        note['body'] = make_md(note['body'])
         notes.append(note)
     return render_template('notes/index.html', notes=notes)
 
@@ -62,19 +74,19 @@ def private():
         'SELECT *'
         ' FROM task t JOIN user u'
         ' WHERE t.isPrivate = 1 and u.userID = t.authorID '
-        ' ORDER BY created DESC'
+        ' ORDER BY dueDate'
     ).fetchall()
     priv_tasks = []
     for task in db_tasks:
         task = dict(task)
         if task['authorID'] == g.user['userID']:
-            task['todo'] = markdown.markdown(task['todo'], extensions=extensions)
+            task['todo'] = make_md(task['todo'])
             priv_tasks.append(task)
     priv_notes = []
     for note in db_notes:
         note = dict(note)
         if note['authorID'] == g.user['userID']:
-            note['body'] = markdown.markdown(note['body'], extensions=extensions)
+            note['body'] = make_md(note['body'])
             priv_notes.append(note)
     return render_template('notes/private.html', notes=priv_notes, tasks=priv_tasks)
 
@@ -168,7 +180,7 @@ def delete(id):
 def detail(id):
     note = get_note(id)
     note = dict(note)
-    note['body'] = markdown.markdown(note['body'], extensions=extensions)
+    note['body'] = make_md(note['body'])
     return render_template('notes/detail.html', note=note)
 
 # Testing Tasks Code
@@ -261,6 +273,6 @@ def tasking():
     soon = timedelta(days=3)
     for task in db_tasks:
         task = dict(task)
-        task['todo'] = markdown.markdown(task['todo'], extensions=extensions)
+        task['todo'] = make_md(task['todo'])
         tasks.append(task)
     return render_template('notes/taskview.html', tasks=tasks, now=now, soon=soon)

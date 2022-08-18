@@ -41,5 +41,12 @@
     {% block content %}{% endblock %}
 </section>
 
-<section class="footer">{% block footer %}{% endblock %}
+<section class="footer">
+    {% block footer %}
+    {% if g.user %} 
+    <div class="secret">
+        <a class="secret" style="color:firebrick; opacity:0.4;" href="{{ url_for('notebook.private') }}"> ..shh </a>
+    </div>
+    {% endif %}
+    {% endblock %}
 </section>
