@@ -10,10 +10,10 @@ Header Holder
 {% endblock %}
 
 {% block content %}
-{% for entry in entries %}
- <article class="note">{{ entry[1] | safe }}</article>
 
-{% endfor %} 
+ <article class="note"><p>{{ entries | safe }}</p></article>
+
+
 {% endblock %}
 
 {% block footer %}Footer{% endblock %} 

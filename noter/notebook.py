@@ -19,14 +19,17 @@ def view():
     db = get_db()
     # BREAKS HERE - BETTER SCHEMA SHOULD MAKE EASIER FIX
     # TECHNICALLY WORKING BUT TRIPLES RESULT
-    db_data = db.execute(
-      'SELECT n.noteID, body, title '
-      ' FROM note n JOIN user u ON n.authorID = u.userID'  
-    ).fetchall()
-    entries_pub = pd.DataFrame(db_data)
-    print(entries_pub)
-
-    return render_template('view_template.html', entries=entries_pub)
+    # db_data = db.execute(
+    #   'SELECT n.title, body '
+    #   ' FROM note n JOIN user u ON n.authorID = u.userID'  
+    # ).fetchall()
+    # entries_pub = pd.DataFrame(db_data)
+    # print(db_data)
+    # entries = entries_pub
+    entries = pd.read_sql('SELECT n.title, body '
+      ' FROM note n JOIN user u ON n.authorID = u.userID', db)
+    print(entries)
+    return render_template('view_template.html', entries=entries)
 
 @bp.route('/index')
 @login_required
