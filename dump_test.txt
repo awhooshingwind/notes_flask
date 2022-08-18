@@ -1,0 +1,48 @@
+PRAGMA foreign_keys=OFF;
+BEGIN TRANSACTION;
+CREATE TABLE notes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    authorID INTEGER NOT NULL,
+    created TIMESTEAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    title TEXT NOT NULL,
+    body TEXT NOT NULL,
+    FOREIGN KEY (authorID) REFERENCES user (id)
+);
+CREATE TABLE user(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL
+);
+INSERT INTO user VALUES(1,'tester','pbkdf2:sha256:260000$aB1Jy6keEnmLT4Ud$ad78a905160cfb31ddda757af36c2d9bd423a48fd18e59aec0f372d7032259f5');
+INSERT INTO user VALUES(2,'tester2','pbkdf2:sha256:260000$qBRq5VbnqK52g2x7$371979be531b8ab57c926cdb100dedf78815aa0c6768209ebad8f5e6100de919');
+CREATE TABLE note (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    authorID INTEGER NOT NULL,
+    isPrivate INTEGER NOT NULL DEFAULT 0,
+    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    title TEXT NOT NULL,
+    body TEXT NOT NULL,
+    FOREIGN KEY (authorID) REFERENCES user (id)
+);
+INSERT INTO note VALUES(1,1,1,'2022-08-13 02:09:39','testing private notes','this one is a secret');
+INSERT INTO note VALUES(2,1,0,'2022-08-13 05:24:43','better logic test','also a secret');
+INSERT INTO note VALUES(3,1,0,'2022-08-14 04:45:37','math jax script',replace(replace('\( \pi \)\r\n\r\n```\r\n:::python\r\nimport numpy as np\r\nfrom numpy.random import default_rng\r\n\r\nrng = default_rng(42)\r\nrng.random(3, 4)\r\n```\r\n\r\n```\r\n#!javascript\r\n<script type="text/x-mathjax-config">\r\n    MathJax.Hub.Config({\r\n      config: ["MMLorHTML.js"],\r\n      jax: ["input/TeX", "output/HTML-CSS", "output/NativeMML"],\r\n      extensions: ["MathMenu.js", "MathZoom.js"]\r\n    });\r\n    </script>\r\n    \r\n```','\r',char(13)),'\n',char(10)));
+INSERT INTO note VALUES(4,2,0,'2022-08-14 06:29:04','different user secret note',replace(replace('how is this working?\r\n\r\n\r\n| Table 1 | Table 2|\r\n|---------|--------|\r\n|stuff 1  | stuff 2|\r\n| more    | more 2 |\r\n','\r',char(13)),'\n',char(10)));
+INSERT INTO note VALUES(5,2,1,'2022-08-14 06:57:57','add note from private index','test');
+CREATE TABLE task (
+id INTEGER PRIMARY KEY AUTOINCREMENT, 
+authorID INTEGER NOT NULL,
+isPrivate INTEGER NOT NULL DEFAULT 1,
+created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+todo TEXT NOT NULL, dueDate TEXT,
+FOREIGN KEY (authorID) REFERENCES user (id)
+);
+INSERT INTO task VALUES(4,1,0,'2022-08-15 23:16:02','not anymore erase','2022-08-04');
+INSERT INTO task VALUES(5,1,0,'2022-08-15 23:16:13',replace(replace('erasing, oops\r\n\r\n# Formatting in Task\r\n\r\n## some more','\r',char(13)),'\n',char(10)),'2022-08-25');
+INSERT INTO task VALUES(6,1,0,'2022-08-16 00:45:31','some task','2022-08-24');
+INSERT INTO task VALUES(7,1,0,'2022-08-16 23:28:01','how many of you will show up?','2022-08-01');
+DELETE FROM sqlite_sequence;
+INSERT INTO sqlite_sequence VALUES('user',2);
+INSERT INTO sqlite_sequence VALUES('note',5);
+INSERT INTO sqlite_sequence VALUES('task',7);
+COMMIT;

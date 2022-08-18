@@ -56,7 +56,7 @@ tr:hover {
 }
 
 .due {
-  color: tomato;
+  color: midnightblue;
 }
 hr {
   border: none;
@@ -219,6 +219,11 @@ article {
   align-content: center;
 }
 
+.deadlineSoon {
+  background-color: palevioletred;
+  font-weight: 800;
+  font-size: 1.2em;
+}
 .content label {
   font-weight: bold;
   margin-bottom: 0.5em;

@@ -36,7 +36,7 @@ def register():
                 user = db.execute(
                     'SELECT * FROM user WHERE username = ?', (username,)
                     ).fetchone()
-                session['user_id'] = user['id']
+                session['userID'] = user['userID']
                 return redirect(url_for("notebook.index"))
         
         flash(error)
@@ -61,7 +61,7 @@ def login():
         
         if error is None:
             session.clear()
-            session['user_id'] = user['id']
+            session['userID'] = user['userID']
             return redirect(url_for('notebook.index'))
         
         flash(error)
@@ -70,13 +70,13 @@ def login():
 
 @bp.before_app_request
 def load_logged_in_user():
-    user_id = session.get('user_id')
+    userID = session.get('userID')
 
-    if user_id is None:
+    if userID is None:
         g.user = None
     else:
         g.user = get_db().execute(
-            'SELECT * FROM user WHERE id = ?', (user_id,)
+            'SELECT * FROM user WHERE userID = ?', (userID,)
         ).fetchone()
 
 @bp.route('logout')

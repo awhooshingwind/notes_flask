@@ -11,7 +11,7 @@
         {{ note['title'] }}
     </h1>
     <div>
-        <a class="action" href="{{ url_for('notebook.update', id=note['id']) }}">Edit</a>
+        <a class="action" href="{{ url_for('notebook.update', id=note['noteID']) }}">Edit</a>
     </div>
     </div>
     <p class="body">{{ note['body'] | safe }}</p>
@@ -27,7 +27,7 @@
 {% block footer %}
 {% for task in tasks %} 
 <article class="private">
- <a href="{{ url_for('notebook.task_update', id=task['id']) }}">{{ task['dueDate'] }}</a>
+ <a href="{{ url_for('notebook.task_update', id=task['taskID']) }}">{{ task['dueDate'] }}</a>
 <p class="body">{{ task['todo'] | safe }} </p>
 </article>
 {% endfor %}

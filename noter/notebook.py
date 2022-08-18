@@ -6,6 +6,7 @@ from werkzeug.exceptions import abort
 from noter.auth import login_required
 from noter.db import get_db
 from noter.logic import *
+from datetime import datetime, timedelta, date
 
 bp = Blueprint('notebook', __name__)
 
@@ -19,18 +20,11 @@ def view():
     # BREAKS HERE - BETTER SCHEMA SHOULD MAKE EASIER FIX
     # TECHNICALLY WORKING BUT TRIPLES RESULT
     db_data = db.execute(
-      'SELECT n.body, t.todo, n.isPrivate '
-      ' FROM note n JOIN task t ON n.author_id = t.author_id'  
+      'SELECT n.noteID, body, title,'
+      ' FROM note n INNER JOIN user u ON n.authorID = u.userID'  
     ).fetchall()
-    entries_pub = []
-    for entry in db_data:
-        if entry['isPrivate'] == 0:
-            entry = dict(entry)
-            for k, v in entry.items():
-                if type(v) is str:
-                    entry[k] = make_md(v)
-            
-            entries_pub.append(entry)
+    entries_pub = pd.DataFrame(db_data)
+    # print(entries_pub)
 
     return render_template('view_template.html', entries=entries_pub)
 
@@ -39,8 +33,8 @@ def view():
 def index():
     db = get_db()
     db_notes = db.execute(
-      'SELECT n.id, title, body, created, author_id, username, isPrivate'
-      ' FROM note n JOIN user u ON n.author_id = u.id'
+      'SELECT n.noteID, title, body, created, authorID, username, isPrivate'
+      ' FROM note n JOIN user u ON n.authorID = u.userID'
       ' ORDER BY created DESC'  
     ).fetchall()
     notes = []
@@ -58,25 +52,25 @@ def private():
     db_notes = db.execute(
       'SELECT *'
       ' FROM note n JOIN user u '
-      ' WHERE n.isPrivate = 1 and u.id = n.author_id '
+      ' WHERE n.isPrivate = 1 and u.userID = n.authorID '
       ' ORDER BY created DESC'  
     ).fetchall()
     db_tasks = db.execute(
         'SELECT *'
         ' FROM task t JOIN user u'
-        ' WHERE t.isPrivate = 1 and u.id = t.author_id '
+        ' WHERE t.isPrivate = 1 and u.userID = t.authorID '
         ' ORDER BY created DESC'
     ).fetchall()
     priv_tasks = []
     for task in db_tasks:
         task = dict(task)
-        if task['author_id'] == g.user['id']:
+        if task['authorID'] == g.user['userID']:
             task['todo'] = markdown.markdown(task['todo'], extensions=extensions)
             priv_tasks.append(task)
     priv_notes = []
     for note in db_notes:
         note = dict(note)
-        if note['author_id'] == g.user['id']:
+        if note['authorID'] == g.user['userID']:
             note['body'] = markdown.markdown(note['body'], extensions=extensions)
             priv_notes.append(note)
     return render_template('notes/private.html', notes=priv_notes, tasks=priv_tasks)
@@ -101,27 +95,27 @@ def create():
         else:
             db = get_db()
             db.execute(
-                'INSERT INTO note (title, body, author_id, isPrivate)'
+                'INSERT INTO note (title, body, authorID, isPrivate)'
                 ' VALUES (?, ?, ?, ?)',
-                (title, body, g.user['id'], isPrivate)
+                (title, body, g.user['userID'], isPrivate)
             )
             db.commit()
             return redirect(url_for('notebook.index'))
     
     return render_template('notes/create.html')
 
-def get_note(id, check_author=True):
+def get_note(noteID, check_author=True):
     note = get_db().execute(
-        'SELECT n.id, title, body, created, author_id, username, isPrivate'
-        ' FROM note n JOIN user u on n.author_id = u.id'
-        ' WHERE n.id = ?',
-        (id,)
+        'SELECT n.noteID, title, body, created, authorID, username, isPrivate'
+        ' FROM note n JOIN user u on n.authorID = u.userID'
+        ' WHERE n.noteID = ?',
+        (noteID,)
         ).fetchone()
 
     if note is None:
-        abort(404, f"Note id {id} doesn't exist.")
+        abort(404, f"Note ID {noteID} doesn't exist.")
         
-    if check_author and note['author_id'] != g.user['id']:
+    if check_author and note['authorID'] != g.user['userID']:
         abort(403)
         
     return note
@@ -149,13 +143,13 @@ def update(id):
             db = get_db()
             db.execute(
                 'UPDATE note SET title = ?, body = ?, isPrivate = ?'
-                ' WHERE id = ?',
+                ' WHERE noteID = ?',
                 (title, body, isPrivate, id)
                 )
             db.commit()
             return redirect(url_for('notebook.index'))
         
-    return render_template('notes/update.html', note=note)
+    return render_template('notes/update.html', note=note, item='note')
 
 @bp.route('/<int:id>/delete', methods=('POST',))
 @login_required
@@ -194,27 +188,27 @@ def make_task():
         else:
             db = get_db()
             db.execute(
-                'INSERT INTO task (todo, author_id, dueDate, isPrivate)'
+                'INSERT INTO task (todo, authorID, dueDate, isPrivate)'
                 ' VALUES (?, ?, ?, ?)',
-                (todo, g.user['id'], dueDate, isPrivate)
+                (todo, g.user['userID'], dueDate, isPrivate)
             )
             db.commit()
-            return redirect(url_for('notebook.index'))
+            return redirect(url_for('notebook.tasking'))
     
-    return render_template('make.html', kind='task')
+    return render_template('make.html', item='task')
 
 def get_task(id, check_author=True):
     task = get_db().execute(
-        'SELECT t.id, todo, dueDate, created, author_id, username, isPrivate'
-        ' FROM task t JOIN user u on t.author_id = u.id'
-        ' WHERE t.id = ?',
+        'SELECT *'
+        ' FROM task t JOIN user u on t.authorID = u.userID'
+        ' WHERE t.taskID = ?',
         (id,)
         ).fetchone()
 
     if task is None:
         abort(404, f"Note id {id} doesn't exist.")
         
-    if check_author and task['author_id'] != g.user['id']:
+    if check_author and task['authorID'] != g.user['userID']:
         abort(403)
         
     return task
@@ -242,26 +236,28 @@ def task_update(id):
             db = get_db()
             db.execute(
                 'UPDATE task SET todo = ?, dueDate = ?, isPrivate = ?'
-                ' WHERE id = ?',
+                ' WHERE taskID = ?',
                 (todo, dueDate, isPrivate, id)
                 )
             db.commit()
             return redirect(url_for('notebook.tasking'))
         
-    return render_template('notes/update.html', task=task, kind='task')
+    return render_template('notes/better_update.html', task=task, item=['task'])
 
 @bp.route('/tasking')
 @login_required
 def tasking():
+    now = date.today()
     db = get_db()
     db_tasks = db.execute(
       'SELECT *'
-      ' FROM task t JOIN user u ON t.author_id = u.id'
-      ' ORDER BY created DESC'  
+      ' FROM task t JOIN user u ON t.authorID = u.userID'
+      ' ORDER BY dueDate'  
     ).fetchall()
     tasks = []
+    soon = timedelta(days=3)
     for task in db_tasks:
         task = dict(task)
         task['todo'] = markdown.markdown(task['todo'], extensions=extensions)
         tasks.append(task)
-    return render_template('notes/taskview.html', tasks=tasks)
+    return render_template('notes/taskview.html', tasks=tasks, now=now, soon=soon)
