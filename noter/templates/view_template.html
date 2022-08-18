@@ -11,7 +11,7 @@ Header Holder
 
 {% block content %}
 {% for entry in entries %}
- <article class="note">{{ entry['body'] | safe }}</article>
+ <article class="note">{{ entry | safe }}</article>
 
 {% endfor %} 
 {% endblock %}

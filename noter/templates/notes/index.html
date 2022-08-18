@@ -14,13 +14,13 @@
         <header>
             <div>
                 <h1>
-                    <a href="{{ url_for('notebook.detail', id=note['id']) }}">
+                    <a href="{{ url_for('notebook.detail', id=note['noteID']) }}">
                         {{ note['title'] }}</a>
                 </h1>
                 <div class="about">by {{ note['username'] }} on {{ note['created'].strftime('%Y-%m-%d') }}</div>
             </div>
-            {% if g.user['id'] == note['author_id'] %}
-            <a class="action" href="{{ url_for('notebook.update', id=note['id']) }}">Edit</a>
+            {% if g.user['userID'] == note['authorID'] %}
+            <a class="action" href="{{ url_for('notebook.update', id=note['noteID']) }}">Edit</a>
             {% endif %}
         </header>
         {% if note['isPrivate'] == 0 %}

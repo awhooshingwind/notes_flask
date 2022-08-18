@@ -1,0 +1,24 @@
+{% extends 'make.html' %}
+
+{% block header %}
+<h1>{% block title %}{{ task['todo']}} {% endblock %}</h1>
+{% endblock %}
+
+
+{% block content %}
+<form method="post">
+    <div>
+        <label for="private">Private?</label>
+        {% if task['isPrivate'] %}
+        <input name="private" type="checkbox" id="private" value="{{ task['isPrivate'] }}" checked>
+        {% else %}
+        <input name="private" type="checkbox" id="private" value="{{ task['isPrivate'] }}">
+        {% endif %}
+    </div>
+    <label for="due">Due Date</label>
+    <input class="duedate" name="due" type="date" id="due" value="{{ task['dueDate'] }}">
+    <label for="todo">Task</label>
+    <textarea name="todo" id="todo">{{task['todo'] }}</textarea>
+    <input type="submit" value="Save">
+</form>
+{% endblock %}

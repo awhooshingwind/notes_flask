@@ -1,6 +1,8 @@
 import os
 
 from flask import Flask
+from flask_moment import Moment
+moment = Moment()
 
 def create_app(test_config=None):
     # create and configure the app
@@ -36,5 +38,7 @@ def create_app(test_config=None):
 
     from . import notebook
     app.register_blueprint(notebook.bp)
+
+    moment.init_app(app)
 
     return app

@@ -7,17 +7,25 @@
 
 {% block content %}
 {% for task in tasks %}
+{% set due = task['dueDate'] %}
 {% if (task['isPrivate']) %}
 <article class="private">
     {% else %}
     <article class="task">
     {% endif %} 
     <h1>
-        <div class="due">
-            Due: {{ task['dueDate'] }} 
+        <div class="due">Due: 
+            {% if due - now < soon %}
+            <span class="deadlineSoon">
+            {% else %} 
+            <span class="notYet">
+                {% endif %}
+                {{ task['dueDate']}}</span>
+                
         </div>
+
     </h1>
-        <div><a class="action" href="{{ url_for('notebook.task_update', id=task['id']) }}">Edit</a></div>
+        <div><a class="action" href="{{ url_for('notebook.task_update', id=task['taskID']) }}">Edit</a></div>
         
     <div>
         <p class="body">{{ task['todo'] | safe }}</p>
