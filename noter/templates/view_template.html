@@ -4,16 +4,27 @@
 
 {%- endmacro %} 
 
-{% block title %} THIS View {% endblock %}
-{% block header %}
-Header Holder
+{% block content %} 
+{% for note in notes %}
+<article class="note">
+    <h1>
+        {{ note['title'] }}
+    </h1>
+    </div>
+    <p class="body">{{ note['body'] | safe }}</p>
+</article>
+{% for task in tasks %} 
+<article class="note">
+<div class="due">Due: {{ task['dueDate'] }}</div>
+<p>{{ task['todo'] | safe }} </p>
+</article>
+{% endfor %}
+{% if not loop.last %}
+<hr class="note_hr"></hr>
+{% endif %}
+{% endfor %}
+{% endblock %} 
+
+{% block footer %}
+
 {% endblock %}
-
-{% block content %}
-
- <article class="note"><p>{{ entries | safe }}</p></article>
-
-
-{% endblock %}
-
-{% block footer %}Footer{% endblock %} 

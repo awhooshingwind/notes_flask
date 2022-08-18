@@ -7,8 +7,9 @@
 {% endblock %}
 
 {% block content %}
-<p>This is a Flask app for simple note-taking, work in progress.</p>
+<p>This is a Flask app for simple note-taking, task tracking, work in progress.</p>
 {% endblock %}
 
-{% block footer %}This will do something cool soon!
-{% endblock %} 
+{% if not g.user %}
+{% block footer %} Today's lucky number: {{ fun }} {% endblock %} 
+{% endif %} 
