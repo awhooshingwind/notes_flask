@@ -8,3 +8,4 @@ import pandas as pd
 extensions = ['mdx_math', 'extra', 'codehilite']
 def make_md(some_text):
     return markdown.markdown(some_text, extensions=extensions)
+
