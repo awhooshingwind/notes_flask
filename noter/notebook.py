@@ -183,7 +183,10 @@ def detail(id):
     note['body'] = make_md(note['body'])
     if not note['isPrivate']:
         return render_template('notes/detail.html', note=note)
-    return redirect(url_for('notebook.index'))
+    elif note['authorID'] == g.user['userID']:
+        return render_template('notes/detail.html', note=note)
+    else:
+        return redirect(url_for('notebook.index'))
 
 # Testing Tasks Code
 @bp.route('/task', methods=('GET', 'POST'))
