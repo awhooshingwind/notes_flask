@@ -20,10 +20,8 @@
             {% else %} 
             <span class="notYet">
                 {% endif %}
-                {{ task['dueDate']}}</span>
-                
-        </div>
-
+                {{ task['dueDate']}}</span>  
+            </div>
     </h1>
         <div><a class="action" href="{{ url_for('notebook.task_update', id=task['taskID']) }}">Edit</a></div>
         
@@ -32,4 +30,7 @@
     </div>
 </article>
 {% endfor %}
+{% if not loop.last %}
+    <hr class="note_hr" style="border-width:0.2em" color="lavender">
+    {% endif %}
 {% endblock content %}
