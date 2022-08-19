@@ -181,7 +181,9 @@ def detail(id):
     note = get_note(id)
     note = dict(note)
     note['body'] = make_md(note['body'])
-    return render_template('notes/detail.html', note=note)
+    if note['isPrivate']:
+        return render_template('notes/detail.html', note=note)
+    return
 
 # Testing Tasks Code
 @bp.route('/task', methods=('GET', 'POST'))

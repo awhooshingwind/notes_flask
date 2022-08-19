@@ -7,7 +7,7 @@
 {% block content %}
 <article class="note">
     <header>
-        <div class="about">by {{ note['username'] }} on {{ note['created'].strftime('%Y-%m-%d') }}</div>
+        <div class="about">by {{ note['authorID'] }} on {{ note['created'].strftime('%Y-%m-%d') }}</div>
         {% if g.user['userID'] == note['authorID'] %}
         <a class="action" href="{{ url_for('notebook.update', id=note['noteID']) }}">Edit</a>
         {% endif %}
