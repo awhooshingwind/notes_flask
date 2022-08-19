@@ -132,7 +132,7 @@ def get_note(noteID, check_author=True):
         
     if (check_author and note['authorID'] != g.user['userID']) and note['isPrivate']:
         abort(403)
-        
+
     return note
     
 @bp.route('/<int:id>/update', methods=('GET', 'POST'))
@@ -181,9 +181,9 @@ def detail(id):
     note = get_note(id)
     note = dict(note)
     note['body'] = make_md(note['body'])
-    if note['isPrivate']:
+    if not note['isPrivate']:
         return render_template('notes/detail.html', note=note)
-    return
+    return redirect(url_for('notebook.index'))
 
 # Testing Tasks Code
 @bp.route('/task', methods=('GET', 'POST'))
