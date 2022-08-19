@@ -130,7 +130,7 @@ def get_note(noteID, check_author=True):
     if note is None:
         abort(404, f"Note ID {noteID} doesn't exist.")
         
-    if check_author and note['authorID'] != g.user['userID']:
+    if (check_author and note['authorID'] != g.user['userID']) and note['isPrivate']:
         abort(403)
         
     return note
