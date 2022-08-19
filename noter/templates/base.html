@@ -11,7 +11,7 @@
 <nav>
     <h1><a href="{{ url_for('notebook.index') }}">NoteTaker </a>
         <a href="{{ url_for('notebook.tasking') }}"> TaskMaker</a>
-        <a href="{{ url_for('notebook.view') }}">   Landing</a>
+        <a href="{{ url_for('notebook.landing') }}">   Landing</a>
     </h1>
     <ul>
         {% if g.user %}
