@@ -18,6 +18,8 @@ def landing():
 @bp.route('/view')
 def view():
     db = get_db()
+    now = date.today()
+    soon = timedelta(days=3)
     db_notes = db.execute(
       'SELECT n.noteID, title, body, created, authorID, username, isPrivate'
       ' FROM note n JOIN user u '
@@ -40,7 +42,7 @@ def view():
         note = dict(note)
         note['body'] = make_md(note['body'])
         pub_notes.append(note)
-    return render_template('view_template.html', notes=pub_notes, tasks=pub_tasks)
+    return render_template('view_template.html', notes=pub_notes, tasks=pub_tasks, now=now, soon=soon)
 
 
 @bp.route('/index')
@@ -268,6 +270,7 @@ def task_update(id):
 @login_required
 def tasking():
     now = date.today()
+    soon = timedelta(days=3)
     db = get_db()
     db_tasks = db.execute(
       'SELECT t.taskID, authorID, isPrivate, created, todo, dueDate'
@@ -275,7 +278,6 @@ def tasking():
       ' ORDER BY dueDate'  
     ).fetchall()
     tasks = []
-    soon = timedelta(days=3)
     for task in db_tasks:
         task = dict(task)
         task['todo'] = make_md(task['todo'])

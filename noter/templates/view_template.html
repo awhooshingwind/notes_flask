@@ -10,16 +10,24 @@
     </div>
     <p class="body">{{ note['body'] | safe }}</p>
 </article>
+{% endfor %}
 <hr class="note_hr"></hr>
 {% for task in tasks %} 
+{% set due = task['dueDate'] %}
 <article class="note">
-<div class="due">Due: {{ task['dueDate'] }}</div>
+    <div class="due">Due: 
+        {% if due - now < soon %}
+        <span class="deadlineSoon">
+        {% else %} 
+        <span class="notYet">
+            {% endif %}
+            {{ task['dueDate']}}</span>
+            
+    </div>
 <p>{{ task['todo'] | safe }} </p>
 </article>
-{% endfor %}
 {% endfor %}
 {% endblock %} 
 
 {% block footer %}
-
 {% endblock %}
