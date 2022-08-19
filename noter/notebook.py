@@ -19,7 +19,7 @@ def landing():
 def view():
     db = get_db()
     db_notes = db.execute(
-      'SELECT *'
+      'SELECT n.noteID, title, body, created, authorID, username, isPrivate'
       ' FROM note n JOIN user u '
       ' WHERE n.isPrivate = 0 and u.userID = n.authorID '
       ' ORDER BY created DESC'  
@@ -219,7 +219,7 @@ def make_task():
 
 def get_task(id, check_author=True):
     task = get_db().execute(
-        'SELECT *'
+        'SELECT t.taskID, authorID, isPrivate, created, todo, dueDate'
         ' FROM task t JOIN user u on t.authorID = u.userID'
         ' WHERE t.taskID = ?',
         (id,)
@@ -270,7 +270,7 @@ def tasking():
     now = date.today()
     db = get_db()
     db_tasks = db.execute(
-      'SELECT *'
+      'SELECT t.taskID, authorID, isPrivate, created, todo, dueDate'
       ' FROM task t JOIN user u ON t.authorID = u.userID'
       ' ORDER BY dueDate'  
     ).fetchall()
