@@ -1,9 +1,6 @@
 {% extends 'base.html' %}
 
-{% macro display_entry(class, ref) -%}
-
-{%- endmacro %} 
-
+{% block title %}Public Viewing {% endblock %} 
 {% block content %} 
 {% for note in notes %}
 <article class="note">
@@ -13,16 +10,13 @@
     </div>
     <p class="body">{{ note['body'] | safe }}</p>
 </article>
+<hr class="note_hr"></hr>
 {% for task in tasks %} 
 <article class="note">
 <div class="due">Due: {{ task['dueDate'] }}</div>
 <p>{{ task['todo'] | safe }} </p>
 </article>
 {% endfor %}
-
-
-<hr class="note_hr"></hr>
-
 {% endfor %}
 {% endblock %} 
 
