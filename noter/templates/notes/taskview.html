@@ -29,8 +29,8 @@
         <p class="body">{{ task['todo'] | safe }}</p>
     </div>
 </article>
-{% endfor %}
 {% if not loop.last %}
     <hr class="note_hr" style="border-width:0.2em" color="lavender">
     {% endif %}
+{% endfor %}
 {% endblock content %}
