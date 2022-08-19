@@ -10,8 +10,11 @@
     </div>
     <p class="body">{{ note['body'] | safe }}</p>
 </article>
+{% if not loop.last %}
+    <hr class="note_hr" style="border-width:0.2em">
+    {% endif %}
 {% endfor %}
-<hr class="note_hr"></hr>
+
 {% for task in tasks %} 
 {% set due = task['dueDate'] %}
 <article class="note">
@@ -26,6 +29,9 @@
     </div>
 <p>{{ task['todo'] | safe }} </p>
 </article>
+{% if not loop.last %}
+    <hr class="note_hr" style="border-width:0.2em">
+    {% endif %}
 {% endfor %}
 {% endblock %} 
 
